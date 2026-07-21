@@ -115,12 +115,20 @@
     try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); }
     catch (e) { return null; }
     renderer.setPixelRatio(Math.min(devicePixelRatio, TOUCH ? 1.3 : 2));
+    if (THREE.ACESFilmicToneMapping) { renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.02; }
     var scene = new THREE.Scene();
     var cam = new THREE.PerspectiveCamera(38, 1, 0.1, 100); cam.position.set(0, 0, 8);
     var group = new THREE.Group(); scene.add(group);
 
+    // couleur de marque (auto par prospect via la variable CSS --brand)
+    var BRANDC = BRAND.coral;
+    try { var _v = getComputedStyle(document.documentElement).getPropertyValue("--brand").trim(); if (_v) BRANDC = new THREE.Color(_v).getHex(); } catch (e) {}
+
     function mat(color, rough, metal) {
-      return new THREE.MeshPhysicalMaterial({ color: color, roughness: rough, metalness: metal || 0.1, clearcoat: 0.9, clearcoatRoughness: 0.25, sheen: 0.4 });
+      return new THREE.MeshPhysicalMaterial({
+        color: color, roughness: rough, metalness: metal || 0.12,
+        clearcoat: 1.0, clearcoatRoughness: 0.18, sheen: 0.4, sheenColor: new THREE.Color(0xffffff)
+      });
     }
     var geos = [
       new THREE.IcosahedronGeometry(1.35, 6),
@@ -129,10 +137,10 @@
       new THREE.IcosahedronGeometry(0.85, 5)
     ];
     var specs = [
-      { g: 0, c: BRAND.coral, pos: [-1.7, 0.4, 0], rough: 0.28, s: 1 },
-      { g: 1, c: BRAND.cobalt, pos: [1.7, -0.9, 0.6], rough: 0.35, s: 1 },
-      { g: 2, c: BRAND.sun, pos: [1.5, 1.4, -0.4], rough: 0.3, s: 0.9 },
-      { g: 3, c: BRAND.lime, pos: [-1.4, -1.5, 0.8], rough: 0.32, s: 1 }
+      { g: 0, c: BRANDC, pos: [-1.7, 0.4, 0], rough: 0.16, s: 1 },
+      { g: 1, c: BRAND.cobalt, pos: [1.7, -0.9, 0.6], rough: 0.3, s: 1 },
+      { g: 2, c: BRAND.sun, pos: [1.5, 1.4, -0.4], rough: 0.24, s: 0.9 },
+      { g: 3, c: BRAND.lime, pos: [-1.4, -1.5, 0.8], rough: 0.28, s: 1 }
     ];
     var meshes = specs.map(function (sp) {
       var m = new THREE.Mesh(geos[sp.g], mat(sp.c, sp.rough));
@@ -142,10 +150,10 @@
       group.add(m); return m;
     });
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-    var key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(4, 6, 6); scene.add(key);
-    var p1 = new THREE.PointLight(BRAND.coral, 60, 30); p1.position.set(-5, 3, 4); scene.add(p1);
-    var p2 = new THREE.PointLight(BRAND.cobalt, 55, 30); p2.position.set(5, -3, 5); scene.add(p2);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    var key = new THREE.DirectionalLight(0xffffff, 2.0); key.position.set(4, 6, 6); scene.add(key);
+    var p1 = new THREE.PointLight(BRANDC, 58, 30); p1.position.set(-5, 3, 4); scene.add(p1);
+    var p2 = new THREE.PointLight(BRAND.cobalt, 52, 30); p2.position.set(5, -3, 5); scene.add(p2);
     var p3 = new THREE.PointLight(BRAND.violet, 40, 30); p3.position.set(0, 4, -4); scene.add(p3);
 
     var mouse = { x: 0, y: 0 };
@@ -172,6 +180,7 @@
         group.rotation.y += ((mouse.x * 0.6) - group.rotation.y) * 0.05 + 0.0004;
         group.rotation.x += ((mouse.y * 0.4) - group.rotation.x) * 0.05;
         group.position.y = scrollRot * -1.2;
+        cam.position.z = 8 + scrollRot * 0.9; // camera qui recule doucement au scroll (profondeur)
         renderer.render(scene, cam);
       }
     };
