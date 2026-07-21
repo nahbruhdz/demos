@@ -15,12 +15,12 @@
 
   /* -------- PRODUCT GRID -------- */
   var PRODUCTS = window.__DEMO_PRODUCTS || [
-    { n: "Veste Atelier", p: "129€", o: "159€", r: "4.9", c: [BRAND.coral, 0x17160F, BRAND.cobalt], flag: "Best-seller", a: "jacket-a", b: "jacket-b" },
-    { n: "Hoodie Signature", p: "89€", o: "", r: "4.8", c: [BRAND.lime, 0x17160F, BRAND.sun], flag: "", a: "hoodie-a", b: "hoodie-b" },
-    { n: "Pantalon Coupe 01", p: "99€", o: "119€", r: "4.9", c: [0x17160F, BRAND.cobalt, 0x8a8578], flag: "-20%", a: "pants-a", b: "street-tall" },
-    { n: "Tee Oversize", p: "45€", o: "", r: "4.7", c: [0xffffff, BRAND.coral, BRAND.violet], flag: "Nouveau", a: "tee-a", b: "rack-warm" },
-    { n: "Bonnet Maille", p: "29€", o: "", r: "4.8", c: [BRAND.sun, 0x17160F, BRAND.cobalt], flag: "", a: "beanie-a", b: "acc-b" },
-    { n: "Sneaker Édition", p: "75€", o: "95€", r: "5.0", c: [BRAND.violet, 0x17160F, BRAND.lime], flag: "Série courte", a: "sneaker-a", b: "sneaker-b" }
+    { n: "Veste Atelier", p: "129€", o: "159€", r: "4.9", rc: "218", c: [0x17160F, 0x6b5a48, BRAND.cobalt], flag: "Best-seller", a: "jacket-a", b: "jacket-b" },
+    { n: "Hoodie Signature", p: "89€", o: "", r: "4.8", rc: "156", c: [0x9aa0a6, 0x17160F, BRAND.sun], flag: "", a: "hoodie-a", b: "hoodie-b" },
+    { n: "Pantalon Coupe 01", p: "99€", o: "119€", r: "4.9", rc: "173", c: [0xcbb79f, 0x17160F, 0x8a8578], flag: "-20%", a: "pants-a", b: "pants-b" },
+    { n: "Tee Oversize", p: "45€", o: "", r: "4.7", rc: "402", c: [0x17160F, 0xffffff, BRAND.coral], flag: "Nouveau", a: "tee-a", b: "tee-b" },
+    { n: "Bonnet Maille", p: "29€", o: "", r: "4.8", rc: "97", c: [BRAND.sun, 0x17160F, BRAND.cobalt], flag: "Plus que 6", a: "beanie-a", b: "beanie-b" },
+    { n: "Sneaker Édition", p: "75€", o: "95€", r: "5.0", rc: "61", c: [BRAND.coral, 0x17160F, 0xffffff], flag: "Série courte", a: "sneaker-a", b: "sneaker-b" }
   ];
   (function grid() {
     var g = document.getElementById("prodGrid"); if (!g) return;
