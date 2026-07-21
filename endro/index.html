@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Endro · Démo</title>
+<meta name="description" content="Démo premium personnalisée · Endro.">
+<meta name="theme-color" content="#FBFAF6">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Endro · Démo premium">
+<meta property="og:description" content="Votre marque, enfin au niveau de vos ventes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23CC7363'/%3E%3Cpath d='M9 22 L16 9 L23 22 Z' fill='%23fff'/%3E%3C/svg%3E">
+<script>document.documentElement.className="js";</script>
+<link rel="stylesheet" href="fonts/fonts-local.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- ==== PERSO PROSPECT: Endro, farid.lazar@ekonagency.com, images assets/img/, couleur --brand ==== -->
+
+<div class="cursor" aria-hidden="true"></div>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__c"><span id="loaderCount">0</span></div>
+  <div class="loader__l">Préparation de votre démo</div>
+  <div class="loader__bar" id="loaderBar"></div>
+</div>
+
+<!-- PROMO BAR -->
+<div class="promo" aria-hidden="true">
+  <div class="promo__row" id="promoRow">
+    <span>Livraison offerte dès 60€</span><span>Nouvelle collection en ligne</span><span>Retours 30 jours</span><span>Paiement en 3x</span>
+    <span>Livraison offerte dès 60€</span><span>Nouvelle collection en ligne</span><span>Retours 30 jours</span><span>Paiement en 3x</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav__mark" href="#top" data-swap="logo">Endro</a>
+  <div class="nav__links">
+    <a href="#pillars">Collections</a>
+    <a href="#story">Le rituel</a>
+    <a href="#prods">Best-sellers</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a class="nav__cta" data-magnetic href="#closing">Découvrir</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero wrap" id="top">
+  <div class="hero__grid">
+    <div class="hero__col">
+      <div class="hero__badge" data-anim="rise">
+        <span class="hero__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</span>
+        <b>4,9/5</b><span>· 2 400+ avis vérifiés</span>
+      </div>
+      <h1 class="hero__title" data-anim="rise">Votre marque, <span class="hl">enfin</span> au niveau de vos <span class="rotator" id="rotator"><span class="rotator__w" style="color:var(--brand)">ventes</span><span class="rotator__w" style="color:var(--cobalt)">marges</span><span class="rotator__w" style="color:var(--violet)">ambitions</span><span class="rotator__w" style="color:var(--brand-d)">résultats</span></span></h1>
+      <p class="hero__sub" data-anim="rise">Une démo de votre page, refaite comme le ferait un studio à 10 000€. Design, 3D, vidéo, animations : tout est fait main, pas un template.</p>
+      <div class="hero__cta" data-anim="rise">
+        <a class="btn btn--lg" data-magnetic href="#prods"><span>Voir la collection</span></a>
+        <a class="btn btn--out btn--lg" data-magnetic href="#closing"><span>La démarche</span></a>
+      </div>
+      <div class="hero__proof" data-anim="rise">
+        <div class="hero__avatars">
+          <i style="background-image:url(assets/img/av5.jpg)"></i>
+          <i style="background-image:url(assets/img/av2.jpg)"></i>
+          <i style="background-image:url(assets/img/av6.jpg)"></i>
+          <i style="background-image:url(assets/img/av1.jpg)"></i>
+        </div>
+        <p><b>+12 000 clients</b> accompagnés cette année</p>
+      </div>
+    </div>
+
+    <div class="hero__col">
+      <div class="hero__stage">
+        <div class="hero__blob" aria-hidden="true"></div>
+        <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
+        <span class="deco deco--lg deco--lime" data-float="0.5" style="right:10%;top:1%"></span>
+        <span class="deco deco--md deco--cobalt" data-float="0.9" style="left:16%;bottom:4%"></span>
+        <span class="deco deco--sm deco--sun" data-float="1.2" style="right:34%;bottom:26%"></span>
+        <div class="bubble bubble--a" data-anim="pop" data-float="0.6"><img class="imgcover" src="assets/img/beauty-hero-a.jpg" alt="Soin visage en application"></div>
+        <div class="bubble bubble--b" data-anim="pop" data-float="1.0"><img class="imgcover" src="assets/img/beauty-hero-b.jpg" alt="Produit de soin signature"></div>
+        <div class="hero__video" data-anim="pop" data-float="0.35">
+          <video autoplay muted loop playsinline poster="assets/hero-poster.jpg">
+            <source src="assets/hero-film.mp4" type="video/mp4"></video>
+          <span class="lbl">● Campagne</span>
+        </div>
+        <div class="hero__tag hero__tag--b" data-anim="pop" style="top:2%;right:1%;bottom:auto">Bougez la souris ↗</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PRESS -->
+<section class="press">
+  <div class="wrap press__in">
+    <span class="press__label">Ils en parlent</span>
+    <div class="press__logos" data-anim="rise">
+      <span>ELLE</span><span>Vogue</span><span>Marie Claire</span><span>Glamour</span><span>Cosmopolitan</span>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="section wrap" id="pillars">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Trouvez votre style</p>
+    <h2 class="section__h" data-anim="rise">Trois gammes, une même exigence.</h2>
+  </div>
+  <div class="pillars">
+    <a class="pillar pillar--1" data-anim="rise" href="#prods">
+      <span class="pillar__tag">Quotidien</span>
+      <h3 class="pillar__h">Les essentiels</h3>
+      <p class="pillar__p">Les indispensables du quotidien, formules propres, résultats visibles.</p>
+      <span class="pillar__link">Explorer</span>
+    </a>
+    <a class="pillar pillar--2" data-anim="rise" href="#prods">
+      <span class="pillar__tag">Série courte</span>
+      <h3 class="pillar__h">Édition limitée</h3>
+      <p class="pillar__p">Les éditions en série courte. Une fois parties, elles ne reviennent pas.</p>
+      <span class="pillar__link">Explorer</span>
+    </a>
+    <a class="pillar pillar--3" data-anim="rise" href="#prods">
+      <span class="pillar__tag">Gestes</span>
+      <h3 class="pillar__h">Le rituel</h3>
+      <p class="pillar__p">Les gestes qui prolongent le soin. Pensés pour se compléter.</p>
+      <span class="pillar__link">Explorer</span>
+    </a>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section wrap">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Pourquoi nous</p>
+    <h2 class="section__h" data-anim="rise">Quatre raisons de rester.</h2>
+  </div>
+  <div class="benefits">
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">Qualité qui se voit</h3><p class="benefit__p">Chaque produit est contrôlé avant l'envoi. Ce que vous recevez correspond à ce que vous avez vu.</p></div>
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">Livraison suivie 48h</h3><p class="benefit__p">Expédition rapide, numéro de suivi immédiat, livraison offerte dès 60€ d'achat.</p></div>
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">Retours simples 30 jours</h3><p class="benefit__p">Produit qui ne convient pas ? Renvoi sans justification pendant 30 jours, remboursement rapide.</p></div>
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">Un vrai humain répond</h3><p class="benefit__p">Une question ? Vous parlez à quelqu'un, pas à un robot. Réponse le jour même.</p></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section wrap">
+  <div class="stats">
+    <div class="stats__grid">
+      <div data-anim="rise"><div class="stat__v" data-count="98" data-suffix="%">0</div><div class="stat__l">clients qui recommandent</div></div>
+      <div data-anim="rise"><div class="stat__v" data-count="48" data-suffix="h">0</div><div class="stat__l">délai de livraison moyen</div></div>
+      <div data-anim="rise"><div class="stat__v" data-count="12" data-suffix="k+">0</div><div class="stat__l">commandes cette année</div></div>
+      <div data-anim="rise"><div class="stat__v" data-count="4.9" data-decimals="1" data-suffix="/5">0</div><div class="stat__l">note moyenne vérifiée</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY · scrollytelling 3D -->
+<section class="story" id="story">
+  <div class="story__pin" id="storyPin">
+    <div class="story__bgword" data-float="0.3" aria-hidden="true">LE RITUEL</div>
+    <div class="story__copy">
+      <p class="story__k">Le rituel</p>
+      <div class="story__steps">
+        <h2 class="story__h">
+          <span class="story__step">La formule.</span>
+          <span class="story__step">La texture.</span>
+          <span class="story__step">Le résultat.</span>
+          <span class="story__step">La vôtre.</span>
+        </h2>
+      </div>
+      <p class="story__p">Scrollez : la gamme défile en profondeur, comme si vous la traversiez.</p>
+    </div>
+    <div class="story__stage" id="storyStage">
+      <figure class="story__card"><img src="assets/img/beauty-01.jpg" alt="Rituel étape 01"><figcaption class="story__cap">Étape 01 · Nettoyer</figcaption></figure>
+      <figure class="story__card"><img src="assets/img/beauty-02.jpg" alt="Rituel étape 02"><figcaption class="story__cap">Étape 02 · Traiter</figcaption></figure>
+      <figure class="story__card"><img src="assets/img/beauty-03.jpg" alt="Rituel étape 03"><figcaption class="story__cap">Étape 03 · Hydrater</figcaption></figure>
+      <figure class="story__card"><img src="assets/img/beauty-04.jpg" alt="Rituel étape 04"><figcaption class="story__cap">Étape 04 · Protéger</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="section wrap">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">En mouvement</p>
+    <h2 class="section__h" data-anim="rise">La routine, filmée.</h2>
+    <p class="section__p" data-anim="rise">Une vidéo vaut mille photos produit. Ici, la vôtre (campagne, tutoriel, coulisses) prend toute la largeur.</p>
+  </div>
+  <div class="video" data-anim="rise">
+    <video autoplay muted loop playsinline poster="assets/lookbook-poster.jpg">
+      <source src="assets/lookbook.mp4" type="video/mp4">
+    </video>
+    <div class="video__ov">
+      <div class="top">
+        <span class="video__badge">● Lecture auto</span>
+        <span class="video__badge">Son coupé</span>
+      </div>
+      <div class="video__play" aria-hidden="true">▶</div>
+      <div class="video__cap">Montrez le produit vivant, pas figé.</div>
+    </div>
+  </div>
+  <!-- PROD (invisible visiteur) : zone vidéo a remplacer par la video du prospect (campagne, reseaux, lookbook). -->
+
+</section>
+
+<!-- PRODUCTS -->
+<section class="section wrap" id="prods">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Best-sellers</p>
+    <h2 class="section__h" data-anim="rise">Les produits qui partent le plus vite.</h2>
+  </div>
+  <div class="prods" id="prodGrid"></div>
+</section>
+
+<!-- STEPS -->
+<section class="section wrap" id="steps">
+  <div class="section__head section__head--center">
+    <p class="section__k eyebrow" data-anim="rise">Comment ça marche</p>
+    <h2 class="section__h" data-anim="rise">De la boutique à votre porte, en 4 étapes.</h2>
+  </div>
+  <div class="steps">
+    <div class="step" data-anim="rise"><div class="step__n">1</div><h3 class="step__h">Choisissez</h3><p class="step__p">Parcourez la gamme, sélectionnez teinte et format en un clic.</p></div>
+    <div class="step" data-anim="rise"><div class="step__n">2</div><h3 class="step__h">Commandez</h3><p class="step__p">Paiement sécurisé, en une fois ou en 3x sans frais.</p></div>
+    <div class="step" data-anim="rise"><div class="step__n">3</div><h3 class="step__h">On expédie</h3><p class="step__p">Préparation le jour même, suivi envoyé aussitôt.</p></div>
+    <div class="step" data-anim="rise"><div class="step__n">4</div><h3 class="step__h">Vous recevez</h3><p class="step__p">Livré sous 48h. Pas convaincu ? 30 jours pour changer d'avis.</p></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section wrap">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Elles et ils l'ont adopté</p>
+    <h2 class="section__h" data-anim="rise">2 400 avis, une même phrase qui revient.</h2>
+  </div>
+  <div class="treel" id="treel"><div class="treel__track" id="treelTrack"></div></div>
+  <!-- PROD (invisible visiteur) : avis d'exemple, a remplacer par les vrais avis du prospect (jamais inventes). -->
+
+</section>
+
+<!-- BIG PROOF -->
+<section class="section wrap">
+  <div class="bigproof" data-anim="rise">
+    <div class="bigproof__v"><span data-count="4.9" data-decimals="1">0</span>/5</div>
+    <p class="bigproof__p">Note moyenne sur 2 400+ avis vérifiés. « Excellent » sur les plateformes indépendantes.</p>
+    <div class="bigproof__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section wrap" id="faq">
+  <div class="section__head section__head--center">
+    <p class="section__k eyebrow" data-anim="rise">On répond</p>
+    <h2 class="section__h" data-anim="rise">Les questions qu'on nous pose.</h2>
+  </div>
+  <div class="faq">
+    <div class="faq__item"><button class="faq__q">Combien de temps pour la livraison ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Préparation le jour même pour toute commande passée avant 15h. Livraison suivie sous 48h en moyenne, offerte dès 60€ d'achat.</p></div></div>
+    <div class="faq__item"><button class="faq__q">Puis-je retourner un article ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Oui, 30 jours pour changer d'avis, sans justification. Remboursement dès réception du retour, généralement sous 3 jours ouvrés.</p></div></div>
+    <div class="faq__item"><button class="faq__q">Comment choisir ma teinte ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Chaque fiche produit détaille teintes et types de peau. En cas de doute, notre équipe répond le jour même pour vous orienter.</p></div></div>
+    <div class="faq__item"><button class="faq__q">Le paiement est-il sécurisé ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Paiement 100% sécurisé (CB, Apple Pay, PayPal) et possibilité de régler en 3x sans frais dès 100€.</p></div></div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="section wrap" id="closing">
+  <div class="closing">
+    <div class="closing__glow" aria-hidden="true"><span class="g1"></span><span class="g2"></span><span class="g3"></span></div>
+    <div class="closing__in">
+      <p class="closing__k eyebrow" style="color:var(--lime)" data-anim="rise">Cette page</p>
+      <h2 class="closing__h" data-anim="rise">Ceci est votre site, pas un <em>modèle</em>.</h2>
+      <div class="closing__cta" data-anim="rise">
+        <a class="btn btn--ink btn--lg" data-magnetic href="mailto:farid.lazar@ekonagency.com"><span>Discuter de la refonte complète</span></a>
+        <a class="btn btn--out btn--lg" data-magnetic href="#prods" style="box-shadow:inset 0 0 0 1.5px rgba(251,250,246,.4); color:var(--paper)"><span>Revoir la démo</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer wrap">
+  <div class="footer__mark" data-swap="logo-big">Endro</div>
+  <div class="footer__grid">
+    <div class="footer__col">Démo réalisée par<br><a href="mailto:farid.lazar@ekonagency.com">Kuro</a></div>
+    <div class="footer__col">Contact<br><a href="mailto:farid.lazar@ekonagency.com">farid.lazar@ekonagency.com</a></div>
+    <div class="footer__col">Statut<br><a href="#top">Démo, pas la boutique finale</a></div>
+    <div class="footer__col">Paiement<br><span style="color:var(--ink)">CB · Apple Pay · PayPal · 3x</span></div>
+  </div>
+</footer>
+
+<script src="lib/lenis.min.js"></script>
+<script src="lib/gsap.min.js"></script>
+<script src="lib/ScrollTrigger.min.js"></script>
+<script src="lib/three.min.js"></script>
+<style id="brandvars">:root{--brand:#CC7363;--cta:#AD6154;--brand-d:#A65D50}</style>
+<script>window.__DEMO_PRODUCTS=[{"n": "Pack 1 an de recharge de déodorant stick…", "p": "32,90€", "o": "35,60€", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "-8%", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/pack-1-an-de-recharge-de-deodorant-stick-pro-age-menopause-endro-cosmetiques-coffret-7675093.webp?v=1782558009", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/duo-deodorant-stick-recharge-48h-pro-age-menopause-endro-cosmetiques-deodorant-5738653.png?v=1778580813"}, {"n": "Clé presse-tube : zéro gâchis", "p": "2,90€", "o": "", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/cle-presse-tube-zero-gachis-endro-cosmetiques-cle-presse-tube-5154107.webp?v=1770046099", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/cle-presse-tube-zero-gachis-endro-cosmetiques-488150.png?v=1770033010"}, {"n": "Déodorant Solide - Menthe", "p": "8,82€", "o": "9,80€", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "-10%", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/deodorant-solide-menthe-endro-cosmetiques-deodorant-2200722.webp?v=1773360431", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/deodorant-solide-menthe-endro-cosmetiques-deodorant-564168.webp?v=1773234158"}, {"n": "Pack 1 an de recharge de déodorant stick…", "p": "32,90€", "o": "35,60€", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "-8%", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/pack-1-an-de-recharge-de-deodorant-stick-rose-framboise-endro-cosmetiques-coffret-5856426.webp?v=1782558009", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/recharge-deodorant-stick-48h-parfum-rose-framboise-endro-cosmetiques-deodorant-2346941.png?v=1778083766"}, {"n": "Pack 1 an de recharge de déodorant stick…", "p": "32,90€", "o": "35,60€", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "-8%", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/pack-1-an-de-recharge-de-deodorant-stick-eclat-de-soleil-endro-cosmetiques-coffret-3891939.webp?v=1782558009", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/duo-deodorant-stick-recharge-48h-parfum-eclat-de-soleil-endro-cosmetiques-deodorant-7181210.png?v=1778580817"}, {"n": "Pack 1 an de recharge de déodorant stick…", "p": "32,90€", "o": "35,60€", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "-8%", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/pack-1-an-de-recharge-de-deodorant-stick-fraicheur-vegetale-endro-cosmetiques-coffret-3540487.webp?v=1782558011", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/duo-deodorant-stick-recharge-mixte-48h-parfum-fraicheur-vegetale-endro-cosmetiques-deodorant-6116703.png?v=1778580813"}, {"n": "Recharge déodorant stick 48H - Parfum ro…", "p": "8,90€", "o": "", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/recharge-deodorant-stick-parfum-rose-framboise-endro-cosmetiques-deodorant-2880653.webp?v=1770046094", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/recharge-deodorant-stick-48h-parfum-rose-framboise-endro-cosmetiques-deodorant-5282081.png?v=1778083767"}, {"n": "Déodorant stick 48H rechargeable - Parfu…", "p": "10,90€", "o": "", "c": ["#CC7363", "#EFD5D0", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/deodorant-stick-rechargeable-parfum-rose-framboise-endro-cosmetiques-deodorant-3651432.webp?v=1770046095", "b": "https://cdn.shopify.com/s/files/1/0262/5313/1854/files/recharge-deodorant-stick-48h-parfum-rose-framboise-endro-cosmetiques-deodorant-2346941.png?v=1778083766"}];</script>
+<script src="app.js"></script>
+</body>
+</html>

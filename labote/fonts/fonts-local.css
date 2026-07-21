@@ -1,0 +1,7 @@
+/* Polices auto-hébergées (0 CDN) */
+@font-face{ font-family:'Bricolage Grotesque'; font-weight:400 800; font-display:swap;
+  src:url('./bricolage.woff2') format('woff2'); }
+@font-face{ font-family:'Hanken Grotesk'; font-weight:400 700; font-display:swap;
+  src:url('./hanken.woff2') format('woff2'); }
+@font-face{ font-family:'Space Mono'; font-weight:400; font-display:swap;
+  src:url('./spacemono.woff2') format('woff2'); }
