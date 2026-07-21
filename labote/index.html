@@ -49,7 +49,7 @@
 <header class="hero wrap" id="top">
   <div class="hero__grid">
     <div class="hero__col">
-      <div class="hero__badge" data-anim="rise">
+      <div class="hero__badge" data-anim="rise" data-glass data-glass-radius="999">
         <span class="hero__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</span>
         <b>4,9/5</b><span>· 2 400+ avis vérifiés</span>
       </div>
@@ -67,6 +67,7 @@
           <i style="background-image:url(assets/img/av1.jpg)"></i>
         </div>
         <p><b>+12 000 clients</b> accompagnés cette année</p>
+        <canvas class="hero__sig" id="heroSig" aria-hidden="true"></canvas>
       </div>
     </div>
 
@@ -84,7 +85,7 @@
             <source src="assets/hero-film.mp4" type="video/mp4"></video>
           <span class="lbl">● Campagne</span>
         </div>
-        <div class="hero__tag hero__tag--b" data-anim="pop" style="top:2%;right:1%;bottom:auto">Bougez la souris ↗</div>
+        <div class="hero__tag hero__tag--b" data-anim="pop" data-glass data-glass-radius="999" style="top:2%;right:1%;bottom:auto">Bougez la souris ↗</div>
       </div>
     </div>
   </div>
@@ -192,8 +193,8 @@
     </video>
     <div class="video__ov">
       <div class="top">
-        <span class="video__badge">● Lecture auto</span>
-        <span class="video__badge">Son coupé</span>
+        <span class="video__badge" data-glass data-glass-radius="999">● Lecture auto</span>
+        <span class="video__badge" data-glass data-glass-radius="999">Son coupé</span>
       </div>
       <div class="video__play" aria-hidden="true">▶</div>
       <div class="video__cap">Montrez le produit vivant, pas figé.</div>

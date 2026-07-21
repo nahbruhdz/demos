@@ -130,6 +130,16 @@
         clearcoat: 1.0, clearcoatRoughness: 0.18, sheen: 0.4, sheenColor: new THREE.Color(0xffffff)
       });
     }
+    // materiau verre (refraction reelle des autres formes du cluster derriere) : equivalent natif
+    // du MeshTransmissionMaterial de @react-three/drei, sans dependance React/R3F.
+    function matGlass(color) {
+      return new THREE.MeshPhysicalMaterial({
+        color: color, roughness: 0.06, metalness: 0,
+        transmission: 1.0, thickness: 0.9, ior: 1.5,
+        clearcoat: 1.0, clearcoatRoughness: 0.06,
+        attenuationColor: new THREE.Color(color), attenuationDistance: 1.1
+      });
+    }
     var geos = [
       new THREE.IcosahedronGeometry(1.35, 6),
       window.THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.62, 1.1, 12, 24) : new THREE.CylinderGeometry(0.62, 0.62, 2, 24),
@@ -143,7 +153,7 @@
       { g: 3, c: BRAND.lime, pos: [-1.4, -1.5, 0.8], rough: 0.28, s: 1 }
     ];
     var meshes = specs.map(function (sp) {
-      var m = new THREE.Mesh(geos[sp.g], mat(sp.c, sp.rough));
+      var m = new THREE.Mesh(geos[sp.g], sp.g === 2 ? matGlass(sp.c) : mat(sp.c, sp.rough));
       m.position.set(sp.pos[0], sp.pos[1], sp.pos[2]); m.scale.setScalar(sp.s);
       m.userData.spin = (Math.random() - 0.5) * 0.4 + 0.2;
       m.userData.ph = Math.random() * 6.28;
@@ -195,6 +205,262 @@
     if (REDUCED) { clusters.forEach(function (c) { c.render(1.4); }); } // pose fixe (accessibilité)
     else requestAnimationFrame(loop);
   }
+
+  /* -------- LIQUID GLASS (refraction reelle, technique SVG feDisplacementMap) --------
+     Adaptation vanilla (sans React/build) du principe des libs type "simple-liquid-glass" :
+     une carte de deplacement (bump radial genere en canvas) pilote un filtre SVG applique
+     en backdrop-filter. Actif seulement sur moteurs Chromium (seuls a interpreter url(#id)
+     dans backdrop-filter) ; ailleurs le blur CSS deja pose en styles.css reste le fallback
+     (jamais pire qu'avant, jamais casse). */
+  (function liquidGlass() {
+    var els = document.querySelectorAll("[data-glass]");
+    if (!els.length) return;
+    var ua = navigator.userAgent || "";
+    var chromium = /(chrome|chromium|crios|edg|opr)\//i.test(ua) && !/iphone|ipad|ipod/i.test(ua);
+    if (!chromium) return;
+
+    var svgNS = "http://www.w3.org/2000/svg";
+    var host = document.createElementNS(svgNS, "svg");
+    host.setAttribute("aria-hidden", "true");
+    host.style.cssText = "position:absolute;width:0;height:0;overflow:hidden";
+    var defs = document.createElementNS(svgNS, "defs");
+    host.appendChild(defs);
+    document.body.appendChild(host);
+
+    function roundRect(ctx, x, y, w, h, r) {
+      r = Math.max(0, Math.min(r, w / 2, h / 2));
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+    function buildMap(w, h, radius) {
+      var c = document.createElement("canvas"); c.width = w; c.height = h;
+      var ctx = c.getContext("2d");
+      ctx.fillStyle = "#808080"; ctx.fillRect(0, 0, w, h); // neutre = pas de deplacement
+      var border = Math.max(6, Math.min(w, h) * 0.18);
+      roundRect(ctx, 1, 1, w - 2, h - 2, radius); ctx.fillStyle = "#fff"; ctx.fill(); // bord = pousse
+      roundRect(ctx, border, border, Math.max(1, w - border * 2), Math.max(1, h - border * 2), Math.max(0, radius - border)); ctx.fillStyle = "#000"; ctx.fill(); // centre = creuse
+      var c2 = document.createElement("canvas"); c2.width = w; c2.height = h;
+      var ctx2 = c2.getContext("2d");
+      ctx2.filter = "blur(" + Math.round(border * 0.55) + "px)"; // bump lisse, pas une marche
+      ctx2.drawImage(c, 0, 0);
+      return c2.toDataURL();
+    }
+
+    var cache = {}, n = 0;
+    function apply(el) {
+      var r = el.getBoundingClientRect();
+      var w = Math.max(8, Math.round(r.width)), h = Math.max(8, Math.round(r.height));
+      var radius = parseFloat(el.getAttribute("data-glass-radius") || "26");
+      var key = w + "x" + h + "x" + radius;
+      var id = cache[key];
+      if (!id) {
+        id = "lg-" + (n++);
+        var uri = buildMap(w, h, radius);
+        var filter = document.createElementNS(svgNS, "filter");
+        filter.setAttribute("id", id);
+        filter.setAttribute("color-interpolation-filters", "sRGB");
+        filter.setAttribute("x", "-15%"); filter.setAttribute("y", "-15%");
+        filter.setAttribute("width", "130%"); filter.setAttribute("height", "130%");
+        var feImg = document.createElementNS(svgNS, "feImage");
+        feImg.setAttribute("href", uri); feImg.setAttribute("x", "0"); feImg.setAttribute("y", "0");
+        feImg.setAttribute("width", "100%"); feImg.setAttribute("height", "100%"); feImg.setAttribute("result", "map");
+        var disp = document.createElementNS(svgNS, "feDisplacementMap");
+        disp.setAttribute("in", "SourceGraphic"); disp.setAttribute("in2", "map");
+        disp.setAttribute("scale", "16"); disp.setAttribute("xChannelSelector", "R"); disp.setAttribute("yChannelSelector", "G");
+        filter.appendChild(feImg); filter.appendChild(disp);
+        defs.appendChild(filter);
+        cache[key] = id;
+      }
+      var v = "url(#" + id + ") blur(6px) saturate(165%)";
+      el.style.backdropFilter = v; el.style.webkitBackdropFilter = v;
+    }
+    els.forEach(apply);
+    var rt;
+    addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { els.forEach(apply); }, 200); });
+  })();
+
+  /* -------- SIGNATURE LIQUIDE (logo prospect, metal liquide anime) --------
+     Shader adapte (licence MIT, github.com/collidingScopes/liquid-logo) : simplex noise +
+     detection de contour + reflets metalliques teintes couleur marque, applique en WebGL
+     brut sur la silhouette (canal alpha) du logo reel du prospect. Le pipeline ne fournit
+     window.__DEMO_LOGO_URL que si un logo detoure exploitable a ete trouve : jamais de faux
+     logo, jamais de bloc plein - sur la trame generique ce bloc reste inactif. */
+  (function heroLiquidLogo() {
+    var url = window.__DEMO_LOGO_URL;
+    var canvas = document.getElementById("heroSig");
+    if (!url || !canvas || REDUCED || TOUCH) return;
+    var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (!gl) return;
+
+    var VS = "attribute vec2 aVertexPosition;\nvoid main(){ gl_Position = vec4(aVertexPosition,0.0,1.0); }";
+    var FS = "precision highp float;\n" +
+      "uniform vec2 u_resolution; uniform float u_time; uniform float u_speed; uniform float u_iterations;\n" +
+      "uniform float u_scale; uniform float u_dotFactor; uniform float u_vOffset; uniform float u_intensityFactor;\n" +
+      "uniform float u_expFactor; uniform vec3 u_colorFactors; uniform float u_colorShift; uniform float u_dotMultiplier;\n" +
+      "uniform float u_noiseIntensity; uniform sampler2D u_logoTexture; uniform float u_logoScale; uniform float u_logoInteractStrength;\n" +
+      "uniform vec3 u_brand;\n" +
+      "float random(vec2 st){ return fract(sin(dot(st.xy, vec2(12.9898,78.233)))*43758.5453123); }\n" +
+      "vec3 mod289(vec3 x){ return x-floor(x*(1.0/289.0))*289.0; } vec4 mod289(vec4 x){ return x-floor(x*(1.0/289.0))*289.0; }\n" +
+      "vec4 permute(vec4 x){ return mod289(((x*34.0)+1.0)*x); } vec4 taylorInvSqrt(vec4 r){ return 1.79284291400159-0.85373472095314*r; }\n" +
+      "float snoise(vec3 v){\n" +
+      "  const vec2 C = vec2(1.0/6.0,1.0/3.0); const vec4 D = vec4(0.0,0.5,1.0,2.0);\n" +
+      "  vec3 i = floor(v+dot(v,C.yyy)); vec3 x0 = v-i+dot(i,C.xxx);\n" +
+      "  vec3 g = step(x0.yzx,x0.xyz); vec3 l = 1.0-g; vec3 i1 = min(g.xyz,l.zxy); vec3 i2 = max(g.xyz,l.zxy);\n" +
+      "  vec3 x1 = x0-i1+C.xxx; vec3 x2 = x0-i2+C.yyy; vec3 x3 = x0-D.yyy;\n" +
+      "  i = mod289(i);\n" +
+      "  vec4 p = permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));\n" +
+      "  float n_ = 0.142857142857; vec3 ns = n_*D.wyz-D.xzx;\n" +
+      "  vec4 j = p-49.0*floor(p*ns.z*ns.z);\n" +
+      "  vec4 x_ = floor(j*ns.z); vec4 y_ = floor(j-7.0*x_);\n" +
+      "  vec4 x = x_*ns.x+ns.yyyy; vec4 y = y_*ns.x+ns.yyyy; vec4 h = 1.0-abs(x)-abs(y);\n" +
+      "  vec4 b0 = vec4(x.xy,y.xy); vec4 b1 = vec4(x.zw,y.zw);\n" +
+      "  vec4 s0 = floor(b0)*2.0+1.0; vec4 s1 = floor(b1)*2.0+1.0; vec4 sh = -step(h,vec4(0.0));\n" +
+      "  vec4 a0 = b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1 = b1.xzyw+s1.xzyw*sh.zzww;\n" +
+      "  vec3 p0 = vec3(a0.xy,h.x); vec3 p1 = vec3(a0.zw,h.y); vec3 p2 = vec3(a1.xy,h.z); vec3 p3 = vec3(a1.zw,h.w);\n" +
+      "  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));\n" +
+      "  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;\n" +
+      "  vec4 m = max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m = m*m;\n" +
+      "  return 42.0*dot(m*m, vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));\n" +
+      "}\n" +
+      "float detectEdges(vec2 uv, float threshold){\n" +
+      "  float dx = 1.0/u_resolution.x; float dy = 1.0/u_resolution.y;\n" +
+      "  vec4 c0 = texture2D(u_logoTexture, uv); vec4 l0 = texture2D(u_logoTexture, uv-vec2(dx,0.0));\n" +
+      "  vec4 r0 = texture2D(u_logoTexture, uv+vec2(dx,0.0)); vec4 t0 = texture2D(u_logoTexture, uv-vec2(0.0,dy));\n" +
+      "  vec4 b0 = texture2D(u_logoTexture, uv+vec2(0.0,dy));\n" +
+      "  float diff = length(c0-l0)+length(c0-r0)+length(c0-t0)+length(c0-b0);\n" +
+      "  return smoothstep(0.0, threshold, diff);\n" +
+      "}\n" +
+      "vec4 liquidMetalEffect(vec4 color, float edge){\n" +
+      "  float highlight = pow(0.5+0.5*sin(edge*6.0), 8.0)*edge;\n" +
+      "  vec4 metallic = vec4(color.r+highlight*u_brand.r, color.g+highlight*u_brand.g, color.b+highlight*u_brand.b, color.a);\n" +
+      "  return clamp(metallic, 0.0, 1.0);\n" +
+      "}\n" +
+      "void main(){\n" +
+      "  vec2 r = u_resolution; vec2 FC = gl_FragCoord.xy; float time = u_time*u_speed;\n" +
+      "  vec2 uv = FC.xy/r; vec2 logoUV = (uv-0.5)/u_logoScale+0.5; logoUV.y = 1.0-logoUV.y;\n" +
+      "  if (logoUV.x < 0.0 || logoUV.x > 1.0 || logoUV.y < 0.0 || logoUV.y > 1.0) discard;\n" +
+      "  vec4 logoColor = texture2D(u_logoTexture, logoUV); float logoAlpha = logoColor.a;\n" +
+      "  if (logoAlpha <= 0.1) discard;\n" +
+      "  float edge = detectEdges(logoUV, 0.2)*u_logoInteractStrength;\n" +
+      "  vec2 p = (FC.xy*2.0-r)/r.y; vec2 l = vec2(0.0); float dotP = dot(p,p);\n" +
+      "  l.x += abs(u_dotFactor-dotP)*u_dotMultiplier;\n" +
+      "  float edgeInfluence = edge*20.0; vec2 v = p*(1.0-l.x)/u_scale;\n" +
+      "  v += vec2(sin(edge*10.0), cos(edge*8.0))*edgeInfluence;\n" +
+      "  float flowNoise = snoise(vec3(p*2.0, time*0.15))*u_noiseIntensity;\n" +
+      "  v += vec2(flowNoise, flowNoise*0.7);\n" +
+      "  vec4 o = vec4(0.0);\n" +
+      "  for (float i = 0.0; i < 16.0; i++) {\n" +
+      "    if (i >= u_iterations) break; float idx = i+1.0;\n" +
+      "    vec2 offset = cos(v.yx*idx+vec2(0.0,idx)+time)/idx+u_vOffset;\n" +
+      "    if (edge > 0.1) offset *= 1.0+edge*4.0;\n" +
+      "    v += offset; o += (sin(vec4(v.x,v.y,v.y,v.x))+1.0)*abs(v.x-v.y)*u_intensityFactor;\n" +
+      "  }\n" +
+      "  if (u_colorShift > 0.0) o = o.wxyz*u_colorShift+o*(1.0-u_colorShift);\n" +
+      "  vec4 expPy = exp(p.y*vec4(u_colorFactors.x,u_colorFactors.y,u_colorFactors.z,0.0));\n" +
+      "  float expLx = exp(-u_expFactor*l.x); vec4 ratio = expPy*expLx/o;\n" +
+      "  vec4 exp2x = exp(2.0*ratio); o = (exp2x-1.0)/(exp2x+1.0);\n" +
+      "  vec2 noiseCoord = FC/1.5; float noiseV = random(noiseCoord+time*0.0004)*0.12-0.075; o = o+vec4(noiseV);\n" +
+      "  o = liquidMetalEffect(o, edge); o = clamp(o, 0.0, 1.0);\n" +
+      "  vec4 finalColor = mix(o, vec4(o.rgb*0.8+0.2, logoAlpha), 0.3);\n" +
+      "  float hi = pow(edge*1.2, 4.0); finalColor.rgb += hi*u_brand;\n" +
+      "  finalColor.a = min(finalColor.a+0.4, 1.0);\n" +
+      "  gl_FragColor = finalColor;\n" +
+      "}";
+
+    function compile(type, src) {
+      var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) return null;
+      return s;
+    }
+    var vs = compile(gl.VERTEX_SHADER, VS), fs = compile(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return;
+    var prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+
+    var quad = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var aPos = gl.getAttribLocation(prog, "aVertexPosition");
+
+    var U = {};
+    ["resolution", "time", "speed", "iterations", "scale", "dotFactor", "vOffset", "intensityFactor",
+      "expFactor", "colorFactors", "colorShift", "dotMultiplier", "noiseIntensity", "logoTexture",
+      "logoScale", "logoInteractStrength", "brand"].forEach(function (nm) { U[nm] = gl.getUniformLocation(prog, "u_" + nm); });
+
+    var tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 0]));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+    var ready = false;
+    var img = new Image();
+    img.onload = function () {
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      ready = true;
+      canvas.classList.add("is-on");
+    };
+    img.onerror = function () {}; // rien d'exploitable -> canvas reste display:none (styles.css)
+    img.src = url;
+
+    function brandRGB() {
+      var v = getComputedStyle(document.documentElement).getPropertyValue("--brand").trim() || "#FF4D2E";
+      var hx = v.replace("#", "");
+      if (hx.length === 3) hx = hx.split("").map(function (ch) { return ch + ch; }).join("");
+      var num = parseInt(hx, 16) || 0xFF4D2E;
+      return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
+    }
+    var brand = brandRGB();
+
+    function size() {
+      var dpr = Math.min(devicePixelRatio || 1, 2);
+      var r = canvas.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.round(r.width * dpr));
+      canvas.height = Math.max(1, Math.round(r.height * dpr));
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    size(); addEventListener("resize", size);
+
+    var lt0 = null;
+    function frame(ts) {
+      requestAnimationFrame(frame);
+      if (!ready) return;
+      if (lt0 === null) lt0 = ts;
+      var t = (ts - lt0) / 1000;
+      gl.useProgram(prog);
+      gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+      gl.uniform2f(U.resolution, canvas.width, canvas.height);
+      gl.uniform1f(U.time, t);
+      gl.uniform1f(U.speed, 0.4);
+      gl.uniform1f(U.iterations, 15);
+      gl.uniform1f(U.scale, 3.12);
+      gl.uniform1f(U.dotFactor, 0.04);
+      gl.uniform1f(U.vOffset, 5.1);
+      gl.uniform1f(U.intensityFactor, 0.07);
+      gl.uniform1f(U.expFactor, 0.2);
+      gl.uniform3f(U.colorFactors, 1.1, 0.7, 0.9);
+      gl.uniform1f(U.colorShift, 0.9);
+      gl.uniform1f(U.dotMultiplier, 0.21);
+      gl.uniform1f(U.noiseIntensity, 0.4);
+      gl.uniform1f(U.logoScale, 1.0);
+      gl.uniform1f(U.logoInteractStrength, 0.4);
+      gl.uniform3f(U.brand, brand[0], brand[1], brand[2]);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(U.logoTexture, 0);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    requestAnimationFrame(frame);
+  })();
 
   /* -------- LENIS -------- */
   var lenis = null;

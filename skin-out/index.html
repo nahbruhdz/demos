@@ -49,7 +49,7 @@
 <header class="hero wrap" id="top">
   <div class="hero__grid">
     <div class="hero__col">
-      <div class="hero__badge" data-anim="rise">
+      <div class="hero__badge" data-anim="rise" data-glass data-glass-radius="999">
         <span class="hero__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</span>
         <b>4,9/5</b><span>· 2 400+ avis vérifiés</span>
       </div>
@@ -67,6 +67,7 @@
           <i style="background-image:url(assets/img/av1.jpg)"></i>
         </div>
         <p><b>+12 000 clients</b> accompagnés cette année</p>
+        <canvas class="hero__sig" id="heroSig" aria-hidden="true"></canvas>
       </div>
     </div>
 
@@ -84,7 +85,7 @@
             <source src="assets/hero-film.mp4" type="video/mp4"></video>
           <span class="lbl">● Campagne</span>
         </div>
-        <div class="hero__tag hero__tag--b" data-anim="pop" style="top:2%;right:1%;bottom:auto">Bougez la souris ↗</div>
+        <div class="hero__tag hero__tag--b" data-anim="pop" data-glass data-glass-radius="999" style="top:2%;right:1%;bottom:auto">Bougez la souris ↗</div>
       </div>
     </div>
   </div>
@@ -192,8 +193,8 @@
     </video>
     <div class="video__ov">
       <div class="top">
-        <span class="video__badge">● Lecture auto</span>
-        <span class="video__badge">Son coupé</span>
+        <span class="video__badge" data-glass data-glass-radius="999">● Lecture auto</span>
+        <span class="video__badge" data-glass data-glass-radius="999">Son coupé</span>
       </div>
       <div class="video__play" aria-hidden="true">▶</div>
       <div class="video__cap">Montrez le produit vivant, pas figé.</div>
@@ -292,6 +293,7 @@
 <script src="lib/three.min.js"></script>
 <style id="brandvars">:root{--brand:#ED0024;--cta:#ED0024;--brand-d:#E30022}</style>
 <script>window.__DEMO_PRODUCTS=[{"n": "Mini Masque Exfoliant 15ml", "p": "10€", "o": "", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/1_f602584e-e351-48a5-9ade-97c4ad2cc2d1.png?v=1781009374", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/2_78b05417-e067-4e79-aa46-a420cafaa2d7.png?v=1781009375"}, {"n": "Sun Out - Crème solaire matifiante SPF50", "p": "18€", "o": "", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/1_c94f8cd4-adda-44d7-9ed9-1a3715fb87b8.png?v=1782720424", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/3_6f2c1f0c-e909-4424-b552-ff20a3267daa.png?v=1783325812"}, {"n": "Clear OUT - Patchs boutons hydrocolloïde…", "p": "8€", "o": "", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Fiche_produit_-_Carrousel_Patch_Leopard.png?v=1777973675", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/2_56a61e98-6447-450a-a194-9d6aa7d627e3.png?v=1778582626"}, {"n": "Mini Soin Stop-Boutons 10ml", "p": "10€", "o": "", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Designsanstitre_21.jpg?v=1715789430", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Designsanstitre_21.jpg?v=1715789430"}, {"n": "Kit multi-patchs hydrocolloïde", "p": "15€", "o": "", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Ficheproduit-Kitmultipatchs_c3c14bb7-f288-449c-b6d4-309f4acf22f5.png?v=1773656979", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Ficheproduit-Kitmultipatchs_2.png?v=1773756756"}, {"n": "Routine réparatrice", "p": "48€", "o": "56€", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "-14%", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Routine_reparatrice.png?v=1772446622", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Masque_exfoliant_Peel_OUT.png?v=1772446682"}, {"n": "Routine hydratante", "p": "49€", "o": "57€", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "-14%", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Routine_hydratante.png?v=1772446454", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Creme_hydratante_Feed_OUT.png?v=1772446491"}, {"n": "Routine cicatrisante", "p": "47€", "o": "55€", "c": ["#ED0024", "#F9B2BD", "#17160F"], "flag": "-15%", "a": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Routine_cicatrisante.png?v=1772445897", "b": "https://cdn.shopify.com/s/files/1/0724/2383/3905/files/Soin_cibl_reparateur.png?v=1772445937"}];</script>
+<script>window.__DEMO_LOGO_URL="assets/logo.png";</script>
 <script src="app.js"></script>
 </body>
 </html>
