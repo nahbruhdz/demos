@@ -160,6 +160,9 @@
       group.add(m); return m;
     });
 
+    // cluster decale a droite : degage la colonne de gauche ou vit le panneau de vente (lisibilite titre)
+    group.position.x = 1.9;
+
     scene.add(new THREE.AmbientLight(0xffffff, 0.4));
     var key = new THREE.DirectionalLight(0xffffff, 2.0); key.position.set(4, 6, 6); scene.add(key);
     var p1 = new THREE.PointLight(BRANDC, 58, 30); p1.position.set(-5, 3, 4); scene.add(p1);
