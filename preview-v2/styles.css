@@ -215,6 +215,10 @@ h1,h2,h3{ font-family:var(--f-display); font-weight:800; line-height:.98; letter
 .pillar__tag{ position:absolute; top:24px; left:30px; font-family:var(--f-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
   padding:6px 12px; border-radius:var(--r-pill); background:rgba(23,22,15,.10); }
 .pillar--2 .pillar__tag{ background:rgba(255,255,255,.18); }
+.pillar__from{ position:absolute; top:22px; right:26px; font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+  padding:6px 12px; border-radius:var(--r-pill); background:var(--ink); color:var(--paper); }
+.pillar--2 .pillar__from{ background:var(--paper); color:var(--ink); }
+.pillar--1 .pillar__from{ font-size:13px; padding:8px 15px; }
 .pillar__h{ font-size:25px; margin-bottom:10px; }
 .pillar--1 .pillar__h{ font-size:clamp(30px,3vw,38px); }
 .pillar__p{ font-size:15px; opacity:.82; margin-bottom:18px; max-width:34ch; }
