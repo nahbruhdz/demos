@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumière & Co · Démo</title>
+<meta name="description" content="Démo premium personnalisée · Lumière & Co.">
+<meta name="theme-color" content="#FBFAF6">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lumière & Co · Démo premium">
+<meta property="og:description" content="Votre marque, enfin au niveau de vos ventes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FF4D2E'/%3E%3Cpath d='M9 22 L16 9 L23 22 Z' fill='%23fff'/%3E%3C/svg%3E">
+<script>document.documentElement.className="js";</script>
+<link rel="stylesheet" href="fonts/fonts-local.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- ==== PERSO PROSPECT: Lumière & Co, farid.lazar@ekonagency.com, images assets/img/, couleur --brand ==== -->
+
+<div class="cursor" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__c"><span id="loaderCount">0</span></div>
+  <div class="loader__l">Préparation de votre démo</div>
+  <div class="loader__bar" id="loaderBar"></div>
+</div>
+
+<!-- PROMO BAR -->
+<div class="promo" aria-hidden="true">
+  <div class="promo__row" id="promoRow">
+    <span>Livraison offerte dès 60€</span><span>Nouvelle collection en ligne</span><span>Retours 30 jours</span><span>Paiement en 3x</span>
+    <span>Livraison offerte dès 60€</span><span>Nouvelle collection en ligne</span><span>Retours 30 jours</span><span>Paiement en 3x</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav__brand">
+    <a class="nav__mark" href="#top" data-swap="logo">LUMIÈRE</a>
+    <span class="nav__kicker">[ Est. 2026 ]</span>
+  </div>
+  <div class="nav__links">
+    <a href="#pillars">Collections</a>
+    <a href="#story">Nouveautés</a>
+    <a href="#prods">Best-sellers</a>
+    <a href="#faq">Livraison &amp; retours</a>
+  </div>
+  <a class="nav__cta" data-magnetic href="#prods">Voir la collection</a>
+</nav>
+
+<!-- HERO : dark cinematique (shader flow-gradient plein ecran + signature metal liquide + typo kinetic massive).
+     Registre anubi/awwwards reconverti vente. Aucune sphere. -->
+<header class="hero" id="top">
+  <canvas class="hero__aura" id="heroAura" aria-hidden="true"></canvas>
+  <canvas class="hero__sig" id="heroSig" aria-hidden="true"></canvas>
+  <div class="hero__grid wrap">
+    <div class="hero__top">
+      <p class="hero__kicker" data-anim="rise">Collection 2026 · Série limitée</p>
+      <div class="hero__rating" data-anim="rise" data-glass data-glass-radius="999">
+        <span class="hero__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</span>
+        <b>4,9/5</b><span>2 400+ avis</span>
+      </div>
+    </div>
+    <h1 class="hero__title" data-anim="rise">Le vestiaire<br>qui vous<br><span class="hero__accent">ressemble</span></h1>
+    <div class="hero__foot">
+      <p class="hero__sub" data-anim="rise">Séries limitées, matières sélectionnées, coupe étudiée. Livraison offerte dès 60€, retours gratuits 30 jours, paiement en 3x.</p>
+      <div class="hero__cta" data-anim="rise">
+        <a class="btn btn--lg" data-magnetic href="#prods"><span>Voir la collection</span></a>
+        <a class="btn btn--ghost btn--lg" data-magnetic href="#story"><span>La marque</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="hero__scroll" aria-hidden="true"><span>Scroll</span></div>
+</header>
+
+<!-- PRESS -->
+<section class="press">
+  <div class="wrap press__in">
+    <span class="press__label">Vu dans</span>
+    <div class="press__logos" data-anim="rise">
+      <span>Vogue</span><span>GQ</span><span>Highsnobiety</span><span>ELLE</span><span>Hypebeast</span>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="section wrap" id="pillars">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Trouvez votre style</p>
+    <h2 class="section__h" data-anim="rise">Trois gammes, une même exigence.</h2>
+  </div>
+  <div class="pillars">
+    <a class="pillar pillar--1" data-anim="rise" href="#prods">
+      <span class="pillar__tag">Essentiels</span>
+      <span class="pillar__from">Dès 39€</span>
+      <h3 class="pillar__h">Le vestiaire de base</h3>
+      <p class="pillar__p">Les pièces que vous portez chaque semaine. Coupe nette, matières qui tiennent lavage après lavage.</p>
+      <span class="pillar__link">Explorer</span>
+    </a>
+    <a class="pillar pillar--2" data-anim="rise" href="#prods">
+      <span class="pillar__tag">Série limitée</span>
+      <span class="pillar__from">Dès 89€</span>
+      <h3 class="pillar__h">Éditions courtes</h3>
+      <p class="pillar__p">Produites en petite quantité. Une fois épuisées, elles ne reviennent pas.</p>
+      <span class="pillar__link">Explorer</span>
+    </a>
+    <a class="pillar pillar--3" data-anim="rise" href="#prods">
+      <span class="pillar__tag">Accessoires</span>
+      <span class="pillar__from">Dès 19€</span>
+      <h3 class="pillar__h">Les finitions</h3>
+      <p class="pillar__p">Les détails qui changent une tenue. Pensés pour se combiner à toute la gamme.</p>
+      <span class="pillar__link">Explorer</span>
+    </a>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section wrap">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Zéro mauvaise surprise</p>
+    <h2 class="section__h" data-anim="rise">Quatre raisons de commander l'esprit tranquille.</h2>
+  </div>
+  <div class="benefits">
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">La bonne taille du premier coup</h3><p class="benefit__p">Guide des tailles précis et mensurations pièce par pièce. Vous commandez juste, vous renvoyez moins.</p></div>
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">Livré en 48h, suivi en temps réel</h3><p class="benefit__p">Expédition le jour même avant 15h, numéro de suivi immédiat, livraison offerte dès 60€.</p></div>
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">Retours gratuits 30 jours</h3><p class="benefit__p">La pièce ne tombe pas comme prévu ? Renvoi gratuit, sans justification, remboursement sous 3 jours.</p></div>
+    <div class="benefit" data-anim="rise"><h3 class="benefit__h">Un humain vous répond</h3><p class="benefit__p">Une hésitation avant d'acheter ? Réponse le jour même, par une vraie personne, pas un robot.</p></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section wrap">
+  <div class="stats">
+    <div class="stats__grid">
+      <div data-anim="rise"><div class="stat__v" data-count="98" data-suffix="%">0</div><div class="stat__l">clients qui recommandent</div></div>
+      <div data-anim="rise"><div class="stat__v" data-count="48" data-suffix="h">0</div><div class="stat__l">délai de livraison moyen</div></div>
+      <div data-anim="rise"><div class="stat__v" data-count="12" data-suffix="k+">0</div><div class="stat__l">commandes cette année</div></div>
+      <div data-anim="rise"><div class="stat__v" data-count="4.9" data-decimals="1" data-suffix="/5">0</div><div class="stat__l">note moyenne vérifiée</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY · scrollytelling 3D -->
+<section class="story" id="story">
+  <div class="story__pin" id="storyPin">
+    <div class="story__bgword" data-float="0.3" aria-hidden="true">SAVOIR-FAIRE</div>
+    <div class="story__copy">
+      <p class="story__k">Le savoir-faire</p>
+      <div class="story__steps">
+        <h2 class="story__h">
+          <span class="story__step">La matière.</span>
+          <span class="story__step">La coupe.</span>
+          <span class="story__step">Les finitions.</span>
+          <span class="story__step">La vôtre.</span>
+        </h2>
+      </div>
+      <p class="story__p">Scrollez : chaque pièce se dévoile en profondeur, du tissu au dernier détail.</p>
+    </div>
+    <div class="story__stage" id="storyStage">
+      <figure class="story__card"><img src="assets/img/fashion-atelier.jpg" alt="Étape 01, sélection de la matière"><figcaption class="story__cap">Étape 01 · Sélectionner</figcaption></figure>
+      <figure class="story__card"><img src="assets/img/fashion-coupe.jpg" alt="Étape 02, coupe"><figcaption class="story__cap">Étape 02 · Couper</figcaption></figure>
+      <figure class="story__card"><img src="assets/img/fashion-details.jpg" alt="Étape 03, assemblage des finitions"><figcaption class="story__cap">Étape 03 · Assembler</figcaption></figure>
+      <figure class="story__card"><img src="assets/img/fashion-piece.jpg" alt="Étape 04, la pièce finie"><figcaption class="story__cap">Étape 04 · Finir</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="section wrap">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">En mouvement</p>
+    <h2 class="section__h" data-anim="rise">La collection, filmée.</h2>
+    <p class="section__p" data-anim="rise">Une vidéo vaut mille fiches produit. Lookbook, coulisses, campagne : votre univers prend toute la largeur.</p>
+  </div>
+  <div class="video" data-anim="rise">
+    <img class="imgcover" src="assets/img/video-poster.jpg" alt="Lookbook de la collection">
+    <div class="video__ov">
+      <div class="top">
+        <span class="video__badge" data-glass data-glass-radius="999">● Lookbook</span>
+        <span class="video__badge" data-glass data-glass-radius="999">Collection 2026</span>
+      </div>
+      <div class="video__play" aria-hidden="true">▶</div>
+      <div class="video__cap">La pièce portée, en mouvement, pas figée sur cintre.</div>
+    </div>
+  </div>
+  <!-- PROD (invisible visiteur) : zone vidéo a remplacer par la video du prospect (campagne, reseaux, lookbook). -->
+
+</section>
+
+<!-- PRODUCTS -->
+<section class="section wrap" id="prods">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Best-sellers</p>
+    <h2 class="section__h" data-anim="rise">Les produits qui partent le plus vite.</h2>
+  </div>
+  <div class="prods" id="prodGrid"></div>
+</section>
+
+<!-- STEPS -->
+<section class="section wrap" id="steps">
+  <div class="section__head section__head--center">
+    <p class="section__k eyebrow" data-anim="rise">Comment ça marche</p>
+    <h2 class="section__h" data-anim="rise">De la boutique à votre porte, en 4 étapes.</h2>
+  </div>
+  <div class="steps">
+    <div class="step" data-anim="rise"><div class="step__n">1</div><h3 class="step__h">Choisissez</h3><p class="step__p">Parcourez la collection, sélectionnez taille et couleur en un clic.</p></div>
+    <div class="step" data-anim="rise"><div class="step__n">2</div><h3 class="step__h">Commandez</h3><p class="step__p">Paiement sécurisé, en une fois ou en 3x sans frais.</p></div>
+    <div class="step" data-anim="rise"><div class="step__n">3</div><h3 class="step__h">On expédie</h3><p class="step__p">Préparation le jour même, suivi envoyé aussitôt.</p></div>
+    <div class="step" data-anim="rise"><div class="step__n">4</div><h3 class="step__h">Vous recevez</h3><p class="step__p">Livré sous 48h. Pas convaincu ? 30 jours pour changer d'avis.</p></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section wrap">
+  <div class="section__head">
+    <p class="section__k eyebrow" data-anim="rise">Elles et ils l'ont adopté</p>
+    <h2 class="section__h" data-anim="rise">2 400 avis, une même phrase qui revient.</h2>
+  </div>
+  <div class="treel" id="treel"><div class="treel__track" id="treelTrack"></div></div>
+  <!-- PROD (invisible visiteur) : avis d'exemple, a remplacer par les vrais avis du prospect (jamais inventes). -->
+
+</section>
+
+<!-- BIG PROOF -->
+<section class="section wrap">
+  <div class="bigproof" data-anim="rise">
+    <div class="bigproof__v"><span data-count="4.9" data-decimals="1">0</span>/5</div>
+    <p class="bigproof__p">Note moyenne sur 2 400+ avis vérifiés. « Excellent » sur les plateformes indépendantes.</p>
+    <div class="bigproof__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section wrap" id="faq">
+  <div class="section__head section__head--center">
+    <p class="section__k eyebrow" data-anim="rise">On répond</p>
+    <h2 class="section__h" data-anim="rise">Les questions qu'on nous pose.</h2>
+  </div>
+  <div class="faq">
+    <div class="faq__item"><button class="faq__q">Combien de temps pour la livraison ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Préparation le jour même pour toute commande passée avant 15h. Livraison suivie sous 48h en moyenne, offerte dès 60€ d'achat.</p></div></div>
+    <div class="faq__item"><button class="faq__q">Puis-je retourner un article ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Oui, 30 jours pour changer d'avis, sans justification. Remboursement dès réception du retour, généralement sous 3 jours ouvrés.</p></div></div>
+    <div class="faq__item"><button class="faq__q">Comment choisir ma taille ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Chaque fiche produit affiche un guide des tailles détaillé, avec les mensurations exactes de la pièce. En cas de doute entre deux tailles, notre équipe vous conseille le jour même.</p></div></div>
+    <div class="faq__item"><button class="faq__q">Le paiement est-il sécurisé ?<span class="faq__ico">+</span></button><div class="faq__a"><p>Paiement 100% sécurisé (CB, Apple Pay, PayPal) et possibilité de régler en 3x sans frais dès 100€.</p></div></div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="section wrap" id="closing">
+  <div class="closing">
+    <div class="closing__glow" aria-hidden="true"><span class="g1"></span><span class="g2"></span><span class="g3"></span></div>
+    <div class="closing__in">
+      <p class="closing__k eyebrow" style="color:var(--lime)" data-anim="rise">Cette démo est pour vous</p>
+      <h2 class="closing__h" data-anim="rise">Ceci est votre site, pas un <em>modèle</em>.</h2>
+      <p class="closing__p" data-anim="rise">Cette page a été refaite gratuitement, rien que pour vous montrer le niveau. La refonte complète de votre boutique, livrée en 7&nbsp;jours, à partir de 1290€. Le travail qu'une agence facture 10&nbsp;000€.</p>
+      <div class="closing__cta" data-anim="rise">
+        <a class="btn btn--ink btn--lg" data-magnetic href="mailto:farid.lazar@ekonagency.com"><span>Discuter de ma refonte</span></a>
+        <a class="btn btn--out btn--lg" data-magnetic href="#prods" style="box-shadow:inset 0 0 0 1.5px rgba(251,250,246,.4); color:var(--paper)"><span>Revoir la démo</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer wrap">
+  <div class="footer__mark" data-swap="logo-big">LUMIÈRE</div>
+  <div class="footer__grid">
+    <div class="footer__col">Démo réalisée par<br><a href="mailto:farid.lazar@ekonagency.com">Kuro</a></div>
+    <div class="footer__col">Contact<br><a href="mailto:farid.lazar@ekonagency.com">farid.lazar@ekonagency.com</a></div>
+    <div class="footer__col">Statut<br><a href="#top">Démo, pas la boutique finale</a></div>
+    <div class="footer__col">Paiement<br><span style="color:var(--ink)">CB · Apple Pay · PayPal · 3x</span></div>
+  </div>
+</footer>
+
+<script src="lib/lenis.min.js"></script>
+<script src="lib/gsap.min.js"></script>
+<script src="lib/ScrollTrigger.min.js"></script>
+<script src="lib/three.min.js"></script>
+<style id="brandvars">:root{--brand:#FF5A3C;--cta:#E8452A;--brand-d:#C0330F}</style>
+<script src="app.js"></script>
+</body>
+</html>
