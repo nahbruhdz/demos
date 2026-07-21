@@ -49,44 +49,29 @@
   <a class="nav__cta" data-magnetic href="#prods">Voir la collection</a>
 </nav>
 
-<!-- HERO : full-bleed, 3D cluster + signature liquide + aura shader plein ecran,
-     contenu commerce pose sur un panneau verre au dessus (jamais un pur visuel de portfolio) -->
+<!-- HERO : split editorial (panneau sombre typo kinetic a gauche, image campagne plein cadre a droite).
+     Aucune 3D, aucune sphere. Image swappable par prospect (hero-main.jpg). -->
 <header class="hero" id="top">
-  <canvas class="hero__aura" id="heroAura" aria-hidden="true"></canvas>
-  <canvas class="hero__sig" id="heroSig" aria-hidden="true"></canvas>
-  <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
-
-  <span class="deco deco--lg deco--lime" data-float="0.5" style="right:8%;top:10%"></span>
-  <span class="deco deco--md deco--cobalt" data-float="0.9" style="right:30%;bottom:12%"></span>
-  <span class="deco deco--sm deco--sun" data-float="1.2" style="right:38%;top:14%"></span>
-
-  <div class="hero__glass" data-anim="pop" data-glass data-glass-radius="26">
-    <b>30 jours</b><span>retours gratuits, sans justification</span>
-  </div>
-  <div class="hero__tag hero__tag--b" data-anim="pop" data-glass data-glass-radius="999">Explorez ↗</div>
-
-  <div class="hero__content wrap">
-    <div class="hero__panel" data-anim="rise" data-glass data-glass-radius="34">
-      <p class="hero__kicker">Nouvelle collection · Série limitée</p>
-      <div class="hero__badge">
-        <span class="hero__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</span>
-        <b>4,9/5</b><span>· 2 400+ avis vérifiés</span>
-      </div>
-      <h1 class="hero__title">Des pièces <span class="hl">faites</span> pour <span class="rotator" id="rotator"><span class="rotator__w" style="color:var(--brand)">durer</span><span class="rotator__w" style="color:var(--cobalt)">marquer</span><span class="rotator__w" style="color:var(--violet)">vous suivre</span><span class="rotator__w" style="color:var(--brand-d)">rester</span></span></h1>
-      <p class="hero__sub">Matières sélectionnées, coupe étudiée, séries courtes. Livraison offerte dès 60€, retours gratuits sous 30 jours, paiement en 3x sans frais.</p>
-      <div class="hero__cta">
+  <div class="hero__left">
+    <div class="hero__inner">
+      <p class="hero__kicker" data-anim="rise">Nouvelle collection · 2026</p>
+      <h1 class="hero__title" data-anim="rise">Le vestiaire<br>qui vous<br><span class="rotator" id="rotator"><span class="rotator__w" style="color:var(--brand)">démarque</span><span class="rotator__w" style="color:var(--sun)">ressemble</span><span class="rotator__w" style="color:var(--lime)">suit</span><span class="rotator__w" style="color:var(--cobalt)">accompagne</span></span></h1>
+      <p class="hero__sub" data-anim="rise">Séries limitées, matières sélectionnées, coupe étudiée. Livraison offerte dès 60€, retours gratuits sous 30 jours, paiement en 3x sans frais.</p>
+      <div class="hero__cta" data-anim="rise">
         <a class="btn btn--lg" data-magnetic href="#prods"><span>Voir la collection</span></a>
-        <a class="btn btn--out btn--lg" data-magnetic href="#story"><span>Découvrir la marque</span></a>
+        <a class="btn btn--ghost btn--lg" data-magnetic href="#story"><span>La marque</span></a>
       </div>
-      <div class="hero__proof">
-        <div class="hero__avatars">
-          <i style="background-image:url(assets/img/av5.jpg)"></i>
-          <i style="background-image:url(assets/img/av2.jpg)"></i>
-          <i style="background-image:url(assets/img/av6.jpg)"></i>
-          <i style="background-image:url(assets/img/av1.jpg)"></i>
-        </div>
-        <p><b>+12 000 clients</b> · satisfait ou remboursé</p>
+      <div class="hero__trust" data-anim="rise">
+        <span class="hero__stars" role="img" aria-label="Noté 4,9 sur 5">★★★★★</span>
+        <b>4,9/5</b><span>2 400+ avis vérifiés · +12 000 clients</span>
       </div>
+    </div>
+  </div>
+  <div class="hero__media">
+    <img class="hero__img" data-swap="hero" src="assets/img/hero-main.jpg" alt="Campagne de la collection">
+    <span class="hero__pill" data-anim="rise">Édition limitée</span>
+    <div class="hero__card" data-anim="pop" data-glass data-glass-radius="20">
+      <b>30 jours</b><span>retours gratuits</span>
     </div>
   </div>
 </header>
