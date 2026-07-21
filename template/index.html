@@ -47,6 +47,7 @@
 
 <!-- HERO -->
 <header class="hero wrap" id="top">
+  <canvas class="hero__aura" id="heroAura" aria-hidden="true"></canvas>
   <div class="hero__grid">
     <div class="hero__col">
       <div class="hero__badge" data-anim="rise" data-glass data-glass-radius="999">
@@ -67,13 +68,12 @@
           <i style="background-image:url(assets/img/av1.jpg)"></i>
         </div>
         <p><b>+12 000 clients</b> accompagnés cette année</p>
-        <canvas class="hero__sig" id="heroSig" aria-hidden="true"></canvas>
       </div>
     </div>
 
     <div class="hero__col">
       <div class="hero__stage">
-        <div class="hero__blob" aria-hidden="true"></div>
+        <canvas class="hero__sig" id="heroSig" aria-hidden="true"></canvas>
         <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
         <span class="deco deco--lg deco--lime" data-float="0.5" style="right:10%;top:1%"></span>
         <span class="deco deco--md deco--cobalt" data-float="0.9" style="left:16%;bottom:4%"></span>
@@ -86,6 +86,9 @@
           <span class="lbl">● Campagne</span>
         </div>
         <div class="hero__tag hero__tag--b" data-anim="pop" data-glass data-glass-radius="999" style="top:2%;right:1%;bottom:auto">Bougez la souris ↗</div>
+        <div class="hero__glass" data-anim="pop" data-glass data-glass-radius="26">
+          <b>100%</b><span>fait main, zéro template</span>
+        </div>
       </div>
     </div>
   </div>

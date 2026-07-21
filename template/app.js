@@ -149,11 +149,11 @@
     var specs = [
       { g: 0, c: BRANDC, pos: [-1.7, 0.4, 0], rough: 0.16, s: 1 },
       { g: 1, c: BRAND.cobalt, pos: [1.7, -0.9, 0.6], rough: 0.3, s: 1 },
-      { g: 2, c: BRAND.sun, pos: [1.5, 1.4, -0.4], rough: 0.24, s: 0.9 },
-      { g: 3, c: BRAND.lime, pos: [-1.4, -1.5, 0.8], rough: 0.28, s: 1 }
+      { g: 2, c: BRAND.sun, pos: [1.5, 1.4, -0.4], rough: 0.24, s: 0.9, glass: true },
+      { g: 3, c: BRAND.lime, pos: [-1.4, -1.5, 0.8], rough: 0.28, s: 1.05, glass: true }
     ];
     var meshes = specs.map(function (sp) {
-      var m = new THREE.Mesh(geos[sp.g], sp.g === 2 ? matGlass(sp.c) : mat(sp.c, sp.rough));
+      var m = new THREE.Mesh(geos[sp.g], sp.glass ? matGlass(sp.c) : mat(sp.c, sp.rough));
       m.position.set(sp.pos[0], sp.pos[1], sp.pos[2]); m.scale.setScalar(sp.s);
       m.userData.spin = (Math.random() - 0.5) * 0.4 + 0.2;
       m.userData.ph = Math.random() * 6.28;
@@ -271,7 +271,7 @@
         feImg.setAttribute("width", "100%"); feImg.setAttribute("height", "100%"); feImg.setAttribute("result", "map");
         var disp = document.createElementNS(svgNS, "feDisplacementMap");
         disp.setAttribute("in", "SourceGraphic"); disp.setAttribute("in2", "map");
-        disp.setAttribute("scale", "16"); disp.setAttribute("xChannelSelector", "R"); disp.setAttribute("yChannelSelector", "G");
+        disp.setAttribute("scale", "24"); disp.setAttribute("xChannelSelector", "R"); disp.setAttribute("yChannelSelector", "G");
         filter.appendChild(feImg); filter.appendChild(disp);
         defs.appendChild(filter);
         cache[key] = id;
@@ -284,16 +284,15 @@
     addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { els.forEach(apply); }, 200); });
   })();
 
-  /* -------- SIGNATURE LIQUIDE (logo prospect, metal liquide anime) --------
+  /* -------- SIGNATURE LIQUIDE (metal liquide anime, centrale dans le hero) --------
      Shader adapte (licence MIT, github.com/collidingScopes/liquid-logo) : simplex noise +
-     detection de contour + reflets metalliques teintes couleur marque, applique en WebGL
-     brut sur la silhouette (canal alpha) du logo reel du prospect. Le pipeline ne fournit
-     window.__DEMO_LOGO_URL que si un logo detoure exploitable a ete trouve : jamais de faux
-     logo, jamais de bloc plein - sur la trame generique ce bloc reste inactif. */
+     detection de contour + reflets metalliques teintes couleur marque, applique en WebGL brut.
+     Priorite au vrai logo detoure du prospect (window.__DEMO_LOGO_URL, fourni par le pipeline
+     seulement si exploitable). Sinon (trame generique ou logo non trouve) : le nom de la marque
+     est dessine directement dans un canvas et sert de silhouette - toujours actif, jamais vide. */
   (function heroLiquidLogo() {
-    var url = window.__DEMO_LOGO_URL;
     var canvas = document.getElementById("heroSig");
-    if (!url || !canvas || REDUCED || TOUCH) return;
+    if (!canvas || REDUCED) return;
     var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
     if (!gl) return;
 
@@ -400,15 +399,38 @@
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 
     var ready = false;
-    var img = new Image();
-    img.onload = function () {
+    function upload(source) {
       gl.bindTexture(gl.TEXTURE_2D, tex);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
       ready = true;
       canvas.classList.add("is-on");
-    };
-    img.onerror = function () {}; // rien d'exploitable -> canvas reste display:none (styles.css)
-    img.src = url;
+    }
+    // repli garanti : le nom de marque (nav__mark, deja personnalise par le pipeline) dessine
+    // dans un canvas carre = silhouette toujours disponible, meme sans logo prospect exploitable.
+    function textFallback() {
+      var name = ((document.querySelector(".nav__mark") || {}).textContent || "Marque").trim();
+      var tc = document.createElement("canvas"); tc.width = 640; tc.height = 640;
+      var tx = tc.getContext("2d");
+      tx.clearRect(0, 0, 640, 640);
+      tx.fillStyle = "#fff"; tx.textAlign = "center"; tx.textBaseline = "middle";
+      var size = 150, fam = "800 " + size + "px 'Bricolage Grotesque', sans-serif";
+      tx.font = fam;
+      while (tx.measureText(name).width > 560 && size > 40) { size -= 4; tx.font = "800 " + size + "px 'Bricolage Grotesque', sans-serif"; }
+      tx.fillText(name, 320, 330);
+      upload(tc);
+    }
+    var url = window.__DEMO_LOGO_URL;
+    if (url) {
+      var img = new Image();
+      img.onload = function () { upload(img); };
+      img.onerror = textFallback; // logo casse/injoignable -> repli texte, jamais de canvas vide
+      img.src = url;
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { if (!url) textFallback(); });
+    } else if (!url) {
+      textFallback();
+    }
 
     function brandRGB() {
       var v = getComputedStyle(document.documentElement).getPropertyValue("--brand").trim() || "#FF4D2E";
@@ -456,7 +478,108 @@
       gl.uniform3f(U.brand, brand[0], brand[1], brand[2]);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(U.logoTexture, 0);
       gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* -------- AURA (fond degrade anime, technique shadergradient.co portee en vanilla) --------
+     shadergradient.co est verrouille React (@shadergradient/react) sans sortie GLSL simple a
+     extraire hors de ce framework ; la TECHNIQUE (bruit simplex qui fait fluer un degrade multi-
+     couleurs) est reimplementee ici en WebGL brut, pilotee par les couleurs de marque reelles du
+     prospect. Plein ecran derriere le hero, opacite faible : anime le fond sans jamais nuire au
+     contraste du texte (charte "clair et vif"). */
+  (function heroAura() {
+    var canvas = document.getElementById("heroAura");
+    if (!canvas || REDUCED) return;
+    var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (!gl) return;
+
+    var VS = "attribute vec2 aVertexPosition;\nvoid main(){ gl_Position = vec4(aVertexPosition,0.0,1.0); }";
+    var FS = "precision highp float;\n" +
+      "uniform vec2 u_res; uniform float u_time; uniform vec3 u_c1; uniform vec3 u_c2; uniform vec3 u_c3; uniform vec3 u_c4;\n" +
+      "vec3 mod289(vec3 x){ return x-floor(x*(1.0/289.0))*289.0; } vec4 mod289(vec4 x){ return x-floor(x*(1.0/289.0))*289.0; }\n" +
+      "vec4 permute(vec4 x){ return mod289(((x*34.0)+1.0)*x); } vec4 taylorInvSqrt(vec4 r){ return 1.79284291400159-0.85373472095314*r; }\n" +
+      "float snoise(vec3 v){\n" +
+      "  const vec2 C = vec2(1.0/6.0,1.0/3.0); const vec4 D = vec4(0.0,0.5,1.0,2.0);\n" +
+      "  vec3 i = floor(v+dot(v,C.yyy)); vec3 x0 = v-i+dot(i,C.xxx);\n" +
+      "  vec3 g = step(x0.yzx,x0.xyz); vec3 l = 1.0-g; vec3 i1 = min(g.xyz,l.zxy); vec3 i2 = max(g.xyz,l.zxy);\n" +
+      "  vec3 x1 = x0-i1+C.xxx; vec3 x2 = x0-i2+C.yyy; vec3 x3 = x0-D.yyy;\n" +
+      "  i = mod289(i);\n" +
+      "  vec4 p = permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));\n" +
+      "  float n_ = 0.142857142857; vec3 ns = n_*D.wyz-D.xzx;\n" +
+      "  vec4 j = p-49.0*floor(p*ns.z*ns.z);\n" +
+      "  vec4 x_ = floor(j*ns.z); vec4 y_ = floor(j-7.0*x_);\n" +
+      "  vec4 x = x_*ns.x+ns.yyyy; vec4 y = y_*ns.x+ns.yyyy; vec4 h = 1.0-abs(x)-abs(y);\n" +
+      "  vec4 b0 = vec4(x.xy,y.xy); vec4 b1 = vec4(x.zw,y.zw);\n" +
+      "  vec4 s0 = floor(b0)*2.0+1.0; vec4 s1 = floor(b1)*2.0+1.0; vec4 sh = -step(h,vec4(0.0));\n" +
+      "  vec4 a0 = b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1 = b1.xzyw+s1.xzyw*sh.zzww;\n" +
+      "  vec3 p0 = vec3(a0.xy,h.x); vec3 p1 = vec3(a0.zw,h.y); vec3 p2 = vec3(a1.xy,h.z); vec3 p3 = vec3(a1.zw,h.w);\n" +
+      "  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));\n" +
+      "  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;\n" +
+      "  vec4 m = max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m = m*m;\n" +
+      "  return 42.0*dot(m*m, vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));\n" +
+      "}\n" +
+      "void main(){\n" +
+      "  vec2 uv = gl_FragCoord.xy/u_res; vec2 p = (uv*2.0-1.0); p.x *= u_res.x/u_res.y;\n" +
+      "  float t = u_time*0.05;\n" +
+      "  float n1 = snoise(vec3(p*0.7, t));\n" +
+      "  float n2 = snoise(vec3(p*1.0+vec2(50.0,10.0), t*1.3));\n" +
+      "  float n3 = snoise(vec3(p*1.3+vec2(120.0,80.0), t*0.8));\n" +
+      "  vec3 col = mix(u_c1, u_c2, smoothstep(-0.9,0.9,n1));\n" +
+      "  col = mix(col, u_c3, smoothstep(-0.1,0.9,n2)*0.55);\n" +
+      "  col = mix(col, u_c4, smoothstep(0.15,0.95,n3)*0.4);\n" +
+      "  float vig = 1.0-smoothstep(0.35,1.05,distance(uv, vec2(0.5)));\n" + // vignette sur uv brut (0..1) : couvre tout le rectangle, pas seulement un cercle central
+      "  gl_FragColor = vec4(col, 0.24*vig);\n" +
+      "}";
+
+    function compile(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; }
+    var vs = compile(gl.VERTEX_SHADER, VS), fs = compile(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return;
+    var prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    var quad = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var aPos = gl.getAttribLocation(prog, "aVertexPosition");
+    var U = {};
+    ["res", "time", "c1", "c2", "c3", "c4"].forEach(function (nm) { U[nm] = gl.getUniformLocation(prog, "u_" + nm); });
+
+    function rgb(varName, fallback) {
+      var v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || fallback;
+      var hx = v.replace("#", ""); if (hx.length === 3) hx = hx.split("").map(function (c) { return c + c; }).join("");
+      var n = parseInt(hx, 16) || 0;
+      return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+    }
+    var c1 = rgb("--brand", "#FF4D2E"), c2 = rgb("--sun", "#FFC53D"), c3 = rgb("--violet", "#7B5CFF"), c4 = rgb("--cobalt", "#2B44FF");
+
+    function size() {
+      var dpr = Math.min(devicePixelRatio || 1, 1.6); // fond flou basse frequence : pas besoin de pleine dpr
+      var r = canvas.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.round(r.width * dpr));
+      canvas.height = Math.max(1, Math.round(r.height * dpr));
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    size(); addEventListener("resize", size);
+
+    var t0 = null;
+    function frame(ts) {
+      requestAnimationFrame(frame);
+      if (t0 === null) t0 = ts;
+      var t = (ts - t0) / 1000;
+      gl.useProgram(prog);
+      gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+      gl.uniform2f(U.res, canvas.width, canvas.height);
+      gl.uniform1f(U.time, t);
+      gl.uniform3f(U.c1, c1[0], c1[1], c1[2]);
+      gl.uniform3f(U.c2, c2[0], c2[1], c2[2]);
+      gl.uniform3f(U.c3, c3[0], c3[1], c3[2]);
+      gl.uniform3f(U.c4, c4[0], c4[1], c4[2]);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
     requestAnimationFrame(frame);
